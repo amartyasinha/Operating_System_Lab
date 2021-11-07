@@ -31,6 +31,7 @@ int main() {
     Processes tmp;
     auto *p = new Processes[n];
 
+    //user input
     for(int i = 0; i < n; i++) {
         cout << "\nEnter the Arrival Time for Process [" << i+1 << "]: ";
         cin >> p[i].arrivalTime;
@@ -55,6 +56,8 @@ int main() {
         }
         p[i].turnAroundTime = p[i].burstTime + p[i].waitingTime;
     }
+
+    //printing waiting time, turnaround time for these processes
     cout << "---------------------------------------------------";
     for(int i = 0; i < n; i++) {
         totalWaitingTime += (float)p[i].waitingTime;
