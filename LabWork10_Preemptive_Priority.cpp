@@ -3,61 +3,103 @@
 //
 
 #include <iostream>
+#include <iomanip>
+
 using namespace std;
 
+const int SIZE = 10;
+
+class Process {
+public:
+    int processID;
+    int arrivalTime;
+    int burstTime;
+    int priority;
+    int startTime;
+    int completionTime;
+    int turnAroundTime;
+    int waitingTime;
+    int responseTime;
+};
+
 int main() {
+    cout << "It is a program to perform Preemptive Priority Scheduling\n";
+    float totalWaitingTime = 0.0, totalTurnAroundTime = 0.0, totalResponseTime = 0.0, totalIdleTime = 0.0;
+    //input
+    cout << "Enter the Number of Processes: ";
     int n;
-    cout << "enter your total no. of process";
     cin >> n;
-    float total, wait[n];
-    float p[n], twaiting = 0, waiting = 0;
-    int proc;
-    int stack[n];
-    float burst[n], arrival[n], sburst, temp[n], top = n, priority[n];
-    int i;
-
-    for (i = 0; i < n; i++) {
-        p[i] = i;
-        stack[i] = i;
-        cout << "enter arrival time :";
-        cin >> arrival[i];
-        cout << endl << "enter burst time:";
-        cin >> burst[i];
-        cout << endl << "enter priority time:";
-        cin >> priority[i];
-        temp[i] = arrival[i];
-        sburst = burst[i] + sburst;
+    auto *p = new Process[n];
+    for (int i = 0; i < n; i++) {
+        cout << "\nEnter the Arrival Time for Process [" << i + 1 << "]: ";
+        cin >> p[i].arrivalTime;
+        cout << "\nEnter the Burst Time for Process [" << i + 1 << "]: ";
+        cin >> p[i].burstTime;
+        cout << "Enter the Priority of Process [" << i + 1 << "]: ";
+        cin >> p[i].priority;
+        p[i].processID = i + 1;
     }
-
-    for (i = 0; i < sburst; i++) {
-        //section 1
-        proc = stack[0];
-        if (temp[proc] == i)
-            twaiting = 0;
-        else
-            twaiting = i - (temp[proc]);
-        temp[proc] = i + 1;
-        wait[proc] = wait[proc] + twaiting;
-        waiting = waiting + (twaiting);
-        burst[proc] = burst[proc] - 1;
-
-        if (burst[proc] == 0) {
-            for (int x = 0; x < top - 1; x++)
-                stack[x] = stack[x + 1];
-            top = top - 1;
-        }
-
-        for (int z = 0; z < top - 1; z++) {
-            if ((priority[stack[0]] > priority[stack[z + 1]]) && (arrival[stack[z + 1]] <= i + 1)) {
-                int t = stack[0];
-                stack[0] = stack[z + 1];
-                stack[z + 1] = t;
+    int currentTime = 0;
+    int completed = 0;
+    int prev = 0;
+    int remainingBurstTime[SIZE]{0};
+    // making a copy of burst time
+    for (int i = 0; i < n; i++) {
+        remainingBurstTime[i] = p[i].burstTime;
+    }
+    int isCompleted[SIZE]{0};
+    cout << setprecision(2) << fixed;
+    int idx, mx;
+    while (completed != n) {
+        idx = -1;
+        mx = -1;
+        for (int i = 0; i < n; i++) {
+            if (p[i].arrivalTime <= currentTime && isCompleted[i] == 0) {
+                if (p[i].priority > mx) {
+                    mx = p[i].priority;
+                    idx = i;
+                } else if (p[i].priority == mx) {
+                    if (p[i].arrivalTime < p[idx].arrivalTime) {
+                        mx = p[i].priority;
+                        idx = i;
+                    }
+                }
             }
         }
+        if (idx != -1) {
+            if (remainingBurstTime[idx] == p[idx].burstTime) {
+                p[idx].startTime = currentTime;
+                totalIdleTime += (float) p[idx].startTime - (float) prev;
+            }
+            remainingBurstTime[idx] -= 1;
+            currentTime++;
+            prev = currentTime;
+            if (remainingBurstTime[idx] == 0) {
+                p[idx].completionTime = currentTime;
+                p[idx].turnAroundTime = p[idx].completionTime - p[idx].arrivalTime;
+                p[idx].waitingTime = p[idx].turnAroundTime - p[idx].burstTime;
+                p[idx].responseTime = p[idx].startTime - p[idx].arrivalTime;
+                totalTurnAroundTime += (float) p[idx].turnAroundTime;
+                totalWaitingTime += (float) p[idx].waitingTime;
+                totalResponseTime += (float) p[idx].responseTime;
+                isCompleted[idx] = 1;
+                completed++;
+            }
+        } else {
+            currentTime++;
+        }
     }
-
-    cout << "Average waiting time is:" << waiting / n;
-    float tu = (sburst + waiting) / n;
-    cout << endl << "Average turnaround time is:" << tu;
+    cout << "-------------------------------------------------------------------------------------------------------------------------------\n";
+    cout << "Process | Arrival Time | Burst Time | Priority | Start Time | Completion Time | TurnAround Time | Waiting Time | Response Time\n";
+    cout << "-------------------------------------------------------------------------------------------------------------------------------\n";
+    for (int i = 0; i < n; i++) {
+        cout << p[i].processID << "\t\t\t" << p[i].arrivalTime << "\t\t\t\t" << p[i].burstTime << "\t\t\t"
+             << p[i].priority << "\t\t\t" << p[i].startTime << "\t\t\t\t" << p[i].completionTime << "\t\t\t\t"
+             << p[i].turnAroundTime << "\t\t\t\t\t" << p[i].waitingTime << "\t\t\t\t" << p[i].responseTime << "\n";
+    }
+    cout << "-------------------------------------------------------------------------------------------------------------------------------\n";
+    cout << "Average Turn Around Time: " << totalTurnAroundTime / (float) n << "\n";
+    cout << "Average Waiting Time: " << totalWaitingTime / (float) n << "\n";
+    cout << "Average Response Time: " << totalResponseTime / (float) n << "\n";
     return 0;
 }

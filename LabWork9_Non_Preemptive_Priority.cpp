@@ -20,6 +20,7 @@ bool comparison(Process a, Process b) {
 }
 
 int main() {
+    cout << "It is a program to perform Non Preemptive Priority Scheduling\n";
     float totalWaitingTime = 0.0, totalTurnAroundTime = 0.0;
     //input
     cout << "Enter the Number of Processes: ";
@@ -53,15 +54,15 @@ int main() {
     }
 
     //printing waiting time, turnaround time for these processes
-    cout << "\n-----------------------------------------------------\n";
-    cout << "Process | Burst Time | Waiting Time | TurnAround Time\n";
-    cout << "-----------------------------------------------------\n";
+    cout << "\n-----------------------------------------------------------------\n";
+    cout << "Process | Burst Time | Priority | Waiting Time | TurnAround Time\n";
+    cout << "-----------------------------------------------------------------\n";
     for(int i = 0; i < n; i++) {
         totalWaitingTime += (float)p[i].waitingTime;
         totalTurnAroundTime += (float)p[i].turnAroundTime;
-        cout << " " << p[i].processID << "\t\t\t" << p[i].burstTime << "\t\t\t" << p[i].waitingTime << "\t\t\t\t" << p[i].turnAroundTime << endl;
+        cout << " " << p[i].processID << "\t\t\t" << p[i].burstTime << "\t\t\t" << p[i].priority << "\t\t\t" << p[i].waitingTime << "\t\t\t\t" << p[i].turnAroundTime << endl;
     }
-    cout << "-----------------------------------------------------\n";
+    cout << "-----------------------------------------------------------------\n";
     cout << "Average Waiting Time: " << totalWaitingTime / (float)n;
     cout << "\nAverage Turnaround Time: " << totalTurnAroundTime / (float)n << endl;
     return 0;
