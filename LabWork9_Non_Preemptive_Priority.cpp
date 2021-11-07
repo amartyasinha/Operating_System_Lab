@@ -4,10 +4,10 @@
 
 #include <iostream>
 #include <algorithm>
-
 using namespace std;
 
-struct Process {
+class Process {
+public:
     int processID;
     int burstTime;
     int priority;
@@ -40,6 +40,7 @@ int main() {
     for (int i = 0; i < n; i++) {
         cout << p[i].processID << " ";
     }
+    //waiting time will be 0 for first process
     p[0].waitingTime = 0;
     for (int i = 1; i < n; i++) {
         p[i].waitingTime = p[i-1].burstTime + p[i-1].waitingTime;
