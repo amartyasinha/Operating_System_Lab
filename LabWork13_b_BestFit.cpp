@@ -6,53 +6,52 @@
 using namespace std;
 
 int main() {
-    int i, j, k, n, m[10], p[10], po[20], flag, z, y, temp, temp1;
-    cout << "enter memory partition:\t";
-    cin >> n;
-    cout << "\nenter memory size for\n";
+    cout << "It is a Program to implement Best Fit\n";
+    int  totalProcess, totalBlock, blockSize[10], processSize[10], allocation[20], flag, temp, temp1;
 
-    for (i = 1; i <= n; i++) {
-        cout << "\npartition " << i << " :\t";
-        cin >> m[i];
-        po[i] = i;
+    //input
+    cout << "Enter Number of Memory Block: ";
+    cin >> totalBlock;
+    for (int i = 1; i <= totalBlock; i++) {
+        cout << "\nEnter Memory Size for Block [" << i << "]: ";
+        cin >> blockSize[i];
+        allocation[i] = i;
+    }
+    cout << "\nEnter Number of Process: ";
+    cin >> totalProcess;
+    for (int i = 1; i <= totalProcess; i++) {
+        cout << "\nEnter Memory Size for Process [" << i << "]: ";
+        cin >> processSize[i];
     }
 
-    cout << "\nenter process:\t";
-    cin >> j;
-    cout << "\nenter memory size for\n";
-
-    for (i = 1; i <= j; i++) {
-        cout << "\nprocess " << i << " :\t";
-        cin >> p[i];
-    }
-
-    cout << "\nBest fit\n";\
-
-    for (y = 1; y <= n; y++) {
-        for (z = y; z <= n; z++) {
-            if (m[y] > m[z]) {
-                temp = m[y];
-                m[y] = m[z];
-                m[z] = temp;
-                temp1 = po[y];
-                po[y] = po[z];
-                po[z] = temp1;
+    //best fit
+    for (int y = 1; y <= totalBlock; y++) {
+        for (int z = y; z <= totalBlock; z++) {
+            if (blockSize[y] > blockSize[z]) {
+                temp = blockSize[y];
+                blockSize[y] = blockSize[z];
+                blockSize[z] = temp;
+                temp1 = allocation[y];
+                allocation[y] = allocation[z];
+                allocation[z] = temp1;
             }
         }
     }
-    for (i = 1; i <= j; i++) {
+
+    //print
+    for (int i = 1; i <= totalProcess; i++) {
         flag = 1;
-        for (k = 1; k <= n; k++) {
-            if (p[i] <= m[k]) {
-                cout << "\nprocess " << i << " whose memory size is " << p[i] << "KB allocated at memory partition:\t" << po[k];
-                m[k] = m[k] - p[i];
+        for (int j = 1; j <= totalBlock; j++) {
+            if (processSize[i] <= blockSize[j]) {
+                cout << "\nProcess [" << i << "] of Size " << processSize[i] << "KB allocated at Memory Block " << allocation[j];
+                blockSize[j] = blockSize[j] - processSize[i];
                 break;
             } else {
                 flag++;
             }
         }
-        if (flag > n) {
-            cout << "\nprocess " << i << " whose memory size is " << p[i] << "KB can't be allocated";
+        if (flag > totalBlock) {
+            cout << "\nProcess [" << i << "] of Size " << processSize[i] << "KB can't be allocated";
         }
     }
     return 0;
