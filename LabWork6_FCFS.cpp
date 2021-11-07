@@ -27,17 +27,15 @@ int main() {
     cout << "\nEnter the Number of Processes: ";
     int n;
     cin >> n;
-    cout << endl;
 
     Processes tmp;
     Processes *p = new Processes[n];
 
     for(int i = 0; i < n; i++) {
-        cout<<"Enter the Arrival Time for Process ["<< i+1 <<"]: ";
-        cin>>p[i].arrivalTime;
-        cout<<"Enter the Burst Time for Process ["<< i+1 <<"]: ";
-        cin>>p[i].burstTime;
-        cout << endl;
+        cout << "\nEnter the Arrival Time for Process [" << i+1 << "]: ";
+        cin >> p[i].arrivalTime;
+        cout << "Enter the Burst Time for Process [" << i+1 << "]: ";
+        cin >> p[i].burstTime;
     }
 
     for(int i = 0; i < n; i++) {
@@ -54,12 +52,12 @@ int main() {
         }
         p[i].turnAroundTime = p[i].burstTime + p[i].waitingTime;
     }
-    cout << "---------------------------------------------------\n";
-    for(int i=0; i < n; i++) {
+    cout << "---------------------------------------------------";
+    for(int i = 0; i < n; i++) {
         totalWaitingTime += float(p[i].waitingTime);
         totalTurnAroundTime += float(p[i].turnAroundTime);
-        cout << "The Waiting Time for Process [" << i+1 << "]: " << p[i].waitingTime;
-        cout << "\nThe Turnaround Time for Process [" << i+1 << "]: " << p[i].turnAroundTime << endl << endl;
+        cout << "\nThe Waiting Time for Process [" << i+1 << "]: " << p[i].waitingTime;
+        cout << "\nThe Turnaround Time for Process [" << i+1 << "]: " << p[i].turnAroundTime << endl;
     }
     cout << "---------------------------------------------------\n";
     cout << "Average Waiting Time: " << totalWaitingTime / (float)n;
