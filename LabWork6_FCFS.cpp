@@ -4,53 +4,64 @@
 
 #include <iostream>
 using namespace std;
-class ps {
-public:
-    int art;
-    int bt;
-    int wt;
-    int ta;
 
-    ps() {
-        art=bt=wt=ta=0;
+class Processes {
+public:
+    int arrivalTime;
+    int burstTime;
+    int waitingTime;
+    int turnAroundTime;
+
+    Processes() {
+        arrivalTime = 0;
+        burstTime = 0;
+        waitingTime = 0;
+        turnAroundTime = 0;
     }
 };
 
 int main() {
-    float wta=0,taa=0;int n;
-    ps tmp;
-    cout<<"\nEnter the Number of Processes=";
-    cin>>n;
-    ps *p=new ps[n];
-    for(int i=1;i<=n;i++) {
-        cout<<"\nEnter the arrival Time for Process "<< i <<"=";
-        cin>>p[i-1].art;
-        cout<<"\nEnter the Burst Time for Process "<< i <<"=";
-        cin>>p[i-1].bt;
+    cout << "It is a Program to implement FCFS scheduling algorithm\n";
+    float totalWaitingTime = 0, totalTurnAroundTime = 0;
+    int n;
+    Processes tmp;
+    cout << "\nEnter the Number of Processes: ";
+    cin >> n;
+    cout << endl;
+
+    Processes *p = new Processes[n];
+
+    for(int i = 0; i<n; i++) {
+        cout<<"Enter the Arrival Time for Process ["<< i+1 <<"]: ";
+        cin>>p[i].arrivalTime;
+        cout<<"Enter the Burst Time for Process ["<< i+1 <<"]: ";
+        cin>>p[i].burstTime;
+        cout << endl;
     }
 
     for(int i=0; i < n; i++) {
         for(int j=i+1; j < n; j++)
-            if(p[i].art<=p[j].art) {
-                p[j].wt=p[i].art+p[i].wt+p[i].bt-p[j].art;
-                if(p[j].wt < 0)
-                    p[j].wt=0;
+            if(p[i].arrivalTime <= p[j].arrivalTime) {
+                p[j].waitingTime= p[i].arrivalTime + p[i].waitingTime + p[i].burstTime - p[j].arrivalTime;
+                if(p[j].waitingTime < 0)
+                    p[j].waitingTime=0;
             }
             else {
                 tmp=p[i];
                 p[i]=p[j];
                 p[j]=tmp;
             }
-        p[i].ta=p[i].bt+p[i].wt;
+        p[i].turnAroundTime = p[i].burstTime + p[i].waitingTime;
     }
-
+    cout << "---------------------------------------------------\n";
     for(int i=0; i < n; i++) {
-        wta+=p[i].wt;
-        taa+=p[i].ta;
-        cout<<"\nThe Waiting Time for Process "<< i+1<<"="<< p[i].wt;
-        cout<<"\nThe Turnaround Time for Process "<< i+1<<"="<< p[i].ta;
+        totalWaitingTime += float(p[i].waitingTime);
+        totalTurnAroundTime += float(p[i].turnAroundTime);
+        cout << "The Waiting Time for Process [" << i+1 << "]: " << p[i].waitingTime;
+        cout << "\nThe Turnaround Time for Process [" << i+1 << "]: " << p[i].turnAroundTime << endl << endl;
     }
-    cout<<"\nAverage Waiting Time="<< wta/(float)n;
-    cout<<"\nAverage Turnaround Time="<< taa/(float)n;
+    cout << "---------------------------------------------------\n";
+    cout << "Average Waiting Time: " << totalWaitingTime / (float)n;
+    cout << "\nAverage Turnaround Time: " << totalTurnAroundTime / (float)n << endl;
     return 0;
 }
