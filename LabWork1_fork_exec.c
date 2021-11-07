@@ -11,7 +11,7 @@ int main() {
     pid_t pid;
     /* fork a child process */
     pid = fork();
-    printf("pid = %d\n", pid);
+    printf("processID = %d\n", pid);
 
     if (pid < 0) {
         /* error occurred */

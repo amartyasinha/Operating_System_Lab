@@ -3,71 +3,62 @@
 //
 
 #include <iostream>
-
 using namespace std;
 
-struct SJF {
-    int pid;
-    int bt;
+class SJF {
+public:
+    int processID;
+    int burstTime;
+    int waitingTime;
+    int turnAroundTime;
 };
 
-void bubbleSort(SJF arr[], int n) {
-    int i, j;
-    for (i = 0; i < n - 1; i++)
-        for (j = 0; j < n - i - 1; j++)
-            if (arr[j].bt > arr[j + 1].bt)
-                swap(arr[j], arr[j + 1]);
-}
-
-bool comparison(SJF a, SJF b) {
-    return (a.bt < b.bt);
-}
-
-void findWaitingTime(SJF p[], int n, int wt[]) {
-    wt[0] = 0;
-
-    for (int i = 1; i < n; i++)
-        wt[i] = p[i - 1].bt + wt[i - 1];
-}
-
-void findTurnAroundTime(SJF p[], int n, int wt[], int tat[]) {
-    for (int i = 0; i < n; i++)
-        tat[i] = p[i].bt + wt[i];
-}
-
-void findavgTime(SJF p[], int n) {
-    int wt[n], tat[n], twt = 0, ttat = 0;
-
-    findWaitingTime(p, n, wt);
-
-    findTurnAroundTime(p, n, wt, tat);
-
-    cout << "\nProcesses " << " Burst time " << " Waiting time " << " Turn around time\n";
-    for (int i = 0; i < n; i++) {
-        twt = twt + wt[i];
-        ttat = ttat + tat[i];
-        cout << " " << p[i].pid << "\t\t" << p[i].bt << "\t " << wt[i] << "\t\t " << tat[i] << endl;
-    }
-
-    cout << "Average waiting time = " << (float) twt / (float) n;
-    cout << "\nAverage turn around time = " << (float) ttat / (float) n;
-}
-
 int main() {
+    cout << "It is a Program to implement SJF scheduling algorithm \n";
+    float totalWaitingTime = 0.0, totalTurnAroundTime = 0.0;
+
+    //user input
+    cout << "Enter the Number of Processes: ";
     int n;
-    cout << "SJF\nEnter the Number of Processes: ";
     cin >> n;
-    SJF *proc = new SJF[n];
+
+    SJF *p = new SJF[n];
+
     for (int i = 0; i < n; i++) {
-        cout << "\nEnter the Burst Time for Process " << i + 1 << "=";
-        cin >> proc[i].bt;
-        proc[i].pid = i + 1;
+        cout << "\nEnter the Burst Time for Process: [" << i + 1 << "]: ";
+        cin >> p[i].burstTime;
+        p[i].processID = i + 1;
     }
-    bubbleSort(proc, n);
+
+    //sorting processes
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (p[j].burstTime > p[j + 1].burstTime)
+                swap(p[j], p[j + 1]);
+        }
+    }
+
     cout << "Order in which process gets executed\n";
     for (int i = 0; i < n; i++)
-        cout << proc[i].pid << " ";
+        cout << p[i].processID << " ";
 
-    findavgTime(proc, n);
+    //waiting time, turnaround time calculation
+    for (int i = 1; i < n; i++) {
+        p[i].waitingTime = p[i - 1].burstTime + p[i - 1].waitingTime;
+        p[i].turnAroundTime = p[i].burstTime + p[i].waitingTime;
+    }
+
+    //printing waiting time, turnaround time for these processes
+    cout << "\n-----------------------------------------------------\n";
+    cout << "Process | Burst Time | Waiting Time | TurnAround Time\n";
+    cout << "-----------------------------------------------------\n";
+    for(int i = 0; i < n; i++) {
+        totalWaitingTime += (float)p[i].waitingTime;
+        totalTurnAroundTime += (float)p[i].turnAroundTime;
+        cout << " " << p[i].processID<< "\t\t\t" << p[i].burstTime << "\t\t\t" << p[i].waitingTime << "\t\t\t\t" << p[i].turnAroundTime << endl;
+    }
+    cout << "-----------------------------------------------------\n";
+    cout << "Average Waiting Time: " << totalWaitingTime / (float)n;
+    cout << "\nAverage Turnaround Time: " << totalTurnAroundTime / (float)n << endl;
     return 0;
 }

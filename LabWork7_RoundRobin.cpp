@@ -64,15 +64,16 @@ int main() {
     }
 
     //printing waiting time, turnaround time for these processes
-    cout << "---------------------------------------------------";
-    for (int i = 0; i < n; i++) {
+    cout << "-----------------------------------------------------\n";
+    cout << "Process | Burst Time | Waiting Time | TurnAround Time\n";
+    cout << "-----------------------------------------------------\n";
+    for(int i = 0; i < n; i++) {
         totalWaitingTime += (float)r[i].waitingTime;
         totalTurnAroundTime += (float)r[i].turnAroundTime;
-        cout << "\nThe Waiting time for Process [" << i + 1 << "]: " << r[i].waitingTime;
-        cout << "\nThe TurnAround time of Process [" << i + 1 << "]: " << r[i].turnAroundTime << endl;
+        cout << " " << i+1 << "\t\t\t" << r[i].burstTime << "\t\t\t" << r[i].waitingTime << "\t\t\t\t" << r[i].turnAroundTime << endl;
     }
-    cout << "---------------------------------------------------\n";
+    cout << "-----------------------------------------------------\n";
     cout << "Average Waiting Time: " << totalWaitingTime / (float)n;
-    cout << "\nAverage Turn Around Time: " << totalTurnAroundTime / (float)n << endl;
+    cout << "\nAverage Turnaround Time: " << totalTurnAroundTime / (float)n << endl;
     return 0;
 }
