@@ -16,13 +16,13 @@ public:
 int main() {
     cout << "It is a Program to implement FCFS scheduling algorithm\n";
     float totalWaitingTime = 0, totalTurnAroundTime = 0;
+    FCFSProcesses tmp;
 
     //user input
     cout << "\nEnter the Number of Processes: ";
     int n;
     cin >> n;
 
-    FCFSProcesses tmp;
     auto *p = new FCFSProcesses[n];
 
     for(int i = 0; i < n; i++) {
