@@ -29,7 +29,7 @@ int main() {
     cin >> n;
 
     Processes tmp;
-    Processes *p = new Processes[n];
+    auto *p = new Processes[n];
 
     for(int i = 0; i < n; i++) {
         cout << "\nEnter the Arrival Time for Process [" << i+1 << "]: ";
@@ -38,6 +38,9 @@ int main() {
         cin >> p[i].burstTime;
     }
 
+    //these two for loops are to run for two processes
+    //the first if else condition is to check which process has arrived first
+    //after that, the waiting time is calculated, in case the there is no waiting time, it is initialized to 0
     for(int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
             if (p[i].arrivalTime <= p[j].arrivalTime) {
@@ -54,8 +57,8 @@ int main() {
     }
     cout << "---------------------------------------------------";
     for(int i = 0; i < n; i++) {
-        totalWaitingTime += float(p[i].waitingTime);
-        totalTurnAroundTime += float(p[i].turnAroundTime);
+        totalWaitingTime += (float)p[i].waitingTime;
+        totalTurnAroundTime += (float)p[i].turnAroundTime;
         cout << "\nThe Waiting Time for Process [" << i+1 << "]: " << p[i].waitingTime;
         cout << "\nThe Turnaround Time for Process [" << i+1 << "]: " << p[i].turnAroundTime << endl;
     }
