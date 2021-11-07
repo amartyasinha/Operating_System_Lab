@@ -14,7 +14,7 @@ public:
 };
 
 int main() {
-    cout << "It is a program to implement Round Robin scheduling algorithm";
+    cout << "It is a program to implement Round Robin scheduling algorithm\n";
     float totalWaitingTime = 0.0, totalTurnAroundTime = 0.0;
     int cpuTime = 0;
 

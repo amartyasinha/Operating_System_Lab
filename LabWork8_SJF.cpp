@@ -6,12 +6,12 @@
 
 using namespace std;
 
-struct Pro {
+struct SJF {
     int pid;
     int bt;
 };
 
-void bubbleSort(Pro arr[], int n) {
+void bubbleSort(SJF arr[], int n) {
     int i, j;
     for (i = 0; i < n - 1; i++)
         for (j = 0; j < n - i - 1; j++)
@@ -19,23 +19,23 @@ void bubbleSort(Pro arr[], int n) {
                 swap(arr[j], arr[j + 1]);
 }
 
-bool comparison(Pro a, Pro b) {
+bool comparison(SJF a, SJF b) {
     return (a.bt < b.bt);
 }
 
-void findWaitingTime(Pro p[], int n, int wt[]) {
+void findWaitingTime(SJF p[], int n, int wt[]) {
     wt[0] = 0;
 
     for (int i = 1; i < n; i++)
         wt[i] = p[i - 1].bt + wt[i - 1];
 }
 
-void findTurnAroundTime(Pro p[], int n, int wt[], int tat[]) {
+void findTurnAroundTime(SJF p[], int n, int wt[], int tat[]) {
     for (int i = 0; i < n; i++)
         tat[i] = p[i].bt + wt[i];
 }
 
-void findavgTime(Pro p[], int n) {
+void findavgTime(SJF p[], int n) {
     int wt[n], tat[n], twt = 0, ttat = 0;
 
     findWaitingTime(p, n, wt);
@@ -55,9 +55,9 @@ void findavgTime(Pro p[], int n) {
 
 int main() {
     int n;
-    cout << "\nSJF\nEnter the Number of Processes=";
+    cout << "SJF\nEnter the Number of Processes: ";
     cin >> n;
-    Pro *proc = new Pro[n];
+    SJF *proc = new SJF[n];
     for (int i = 0; i < n; i++) {
         cout << "\nEnter the Burst Time for Process " << i + 1 << "=";
         cin >> proc[i].bt;
