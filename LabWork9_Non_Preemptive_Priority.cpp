@@ -21,9 +21,11 @@ bool comparison(Process a, Process b) {
 
 int main() {
     float totalWaitingTime = 0.0, totalTurnAroundTime = 0.0;
+    //input
     cout << "Enter the Number of Processes: ";
     int n;
     cin >> n;
+
     auto *p = new Process[n];
 
     for (int i = 0; i < n; i++) {
@@ -34,6 +36,7 @@ int main() {
         p[i].processID = i + 1;
     }
 
+    //sorting processes according to their priority
     sort(p, p+n, comparison);
 
     cout << "\nOrder in which processes gets executed \n";
