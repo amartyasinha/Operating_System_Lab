@@ -3,11 +3,10 @@
 //
 
 #include<iostream>
-
 using namespace std;
 
 int main() {
-    int i, j, k, n, l, m[10], p[10], po[20], flag, z, y, temp, temp1;
+    int i, j, k, n, m[10], p[10], po[20], flag, z, y, temp, temp1;
     cout << "enter memory partition:\t";
     cin >> n;
     cout << "\nenter memory size for\n";
