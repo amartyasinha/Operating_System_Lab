@@ -8,36 +8,35 @@ using namespace std;
 
 class RoundRobin {
     int quantum;
-    int np; //Number of process
-    int burst[20];// burst time of processes
-    int waiting[20];//Waiting time
-    int remBurst[20];// keeps track of remaining burst time of the process
+    int n; //Number of process
+    int burstTime[20];// burstTime time of processes
+    int waitingTime[20];//Waiting time
+    int remBurst[20];// keeps track of remaining burstTime time of the process
 public:
-    void input(); // Takes no. of processes and their burst time
-    void wait();   // Calculates waiting time of the processes
-    void avgWait(); // Calculate average waiting for the process
+    void input(); // Takes no. of processes and their burstTime time
+    void wait();   // Calculates waitingTime time of the processes
+    void avgWait(); // Calculate average waitingTime for the process
     void turnAround();
     void avgTurnAround();
 };
 
 void RoundRobin::input() {
-    cout << "Enter the number of processes. " << endl;
-    cin >> np;
-    burst[np];
-    waiting[np];
-    remBurst[np];
-    cout << "Enter the burst time for the respective process. " << endl;
-    for (int i = 0; i < np; i++) {
-        cout << "For Process P" << i + 1 << " :-";
-        cin >> burst[i];
+    cout << "Enter the Number of Processes: " << endl;
+    cin >> n;
+    burstTime[n];
+    waitingTime[n];
+    remBurst[n];
+    for (int i = 0; i < n; i++) {
+        cout << "Enter Burst Time for Process [" << i + 1 << "]: ";
+        cin >> burstTime[i];
     }
     cout << "\n";
-    cout << "Enter the quantum for the process. " << endl;
+    cout << "Enter the Quantum for the Process: " << endl;
     cin >> quantum;
 
-    // Now keeping a copy of burst time
-    for (int i = 0; i < np; i++) {
-        remBurst[i] = burst[i];
+    // Now keeping a copy of burstTime time
+    for (int i = 0; i < n; i++) {
+        remBurst[i] = burstTime[i];
     }
 
 }
@@ -47,7 +46,7 @@ void RoundRobin::wait() {
 
     while (true) {
         bool flag = false;
-        for (int i = 0; i < np; i++) {
+        for (int i = 0; i < n; i++) {
             if (remBurst[i] > 0) {
                 flag = true;
                 if (remBurst[i] > quantum) {
@@ -57,7 +56,7 @@ void RoundRobin::wait() {
                 } else {
                     ct += remBurst[i];
                     remBurst[i] = 0;
-                    waiting[i] = ct - burst[i];
+                    waitingTime[i] = ct - burstTime[i];
                 }
             }
         }
@@ -65,37 +64,33 @@ void RoundRobin::wait() {
             break;
         }
     }
-    cout << "Waiting time  of process. " << endl;
-    for (int i = 0; i < np; i++) {
-        cout << "P" << i + 1 << " = " << waiting[i] << endl;
+    for (int i = 0; i < n; i++) {
+        cout << "Waiting time  of Process [" << i + 1 << "]: " << waitingTime[i] << endl;
     }
 }
 
 void RoundRobin::avgWait() {
-    cout << "Average waiting time :- ";
-    float awt = 0.0;
-    for (int i = 0; i < np; i++) {
-        awt += waiting[i];
+    float totalWaitingTime = 0.0;
+    for (int i = 0; i < n; i++) {
+        totalWaitingTime += (float)waitingTime[i];
     }
-    cout << awt / np << endl;
+    cout << "Average Waiting Time: " << totalWaitingTime / (float)n << endl;
 }
 
 void RoundRobin::turnAround() {
-    cout << "TurnAround time :- " << endl;
-    for (int i = 0; i < np; i++) {
-        float tt = 0.0;
-        tt = waiting[i] + burst[i];
-        cout << "For Process p" << i + 1 << ":- " << tt << endl;
+    for (int i = 0; i < n; i++) {
+        float turnAroundTime = 0.0;
+        turnAroundTime = (float)waitingTime[i] + (float)burstTime[i];
+        cout << "TurnAround time for Process [" << i + 1 << "]: " << turnAroundTime << endl;
     }
 }
 
 void RoundRobin::avgTurnAround() {
-    cout << "Average Turn Around time :- ";
-    float att = 0.0;
-    for (int i = 0; i < np; i++) {
-        att += waiting[i] + burst[i];
+    float totalTurnAroundTime = 0.0;
+    for (int i = 0; i < n; i++) {
+        totalTurnAroundTime += (float)waitingTime[i] + (float)burstTime[i];
     }
-    cout << att / np << endl;
+    cout << "Average Turn Around Time: " << totalTurnAroundTime / (float)n << endl;
 }
 
 int main() {
