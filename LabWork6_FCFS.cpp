@@ -5,33 +5,26 @@
 #include <iostream>
 using namespace std;
 
-class Processes {
+class FCFSProcesses {
 public:
     int arrivalTime;
     int burstTime;
     int waitingTime;
     int turnAroundTime;
-
-    Processes() {
-        arrivalTime = 0;
-        burstTime = 0;
-        waitingTime = 0;
-        turnAroundTime = 0;
-    }
 };
 
 int main() {
     cout << "It is a Program to implement FCFS scheduling algorithm\n";
     float totalWaitingTime = 0, totalTurnAroundTime = 0;
 
+    //user input
     cout << "\nEnter the Number of Processes: ";
     int n;
     cin >> n;
 
-    Processes tmp;
-    auto *p = new Processes[n];
+    FCFSProcesses tmp;
+    auto *p = new FCFSProcesses[n];
 
-    //user input
     for(int i = 0; i < n; i++) {
         cout << "\nEnter the Arrival Time for Process [" << i+1 << "]: ";
         cin >> p[i].arrivalTime;

@@ -3,102 +3,76 @@
 //
 
 #include<iostream>
-
 using namespace std;
 
 class RoundRobin {
-    int quantum;
-    int n; //Number of process
-    int burstTime[20];// burstTime time of processes
-    int waitingTime[20];//Waiting time
-    int remBurst[20];// keeps track of remaining burstTime time of the process
 public:
-    void input(); // Takes no. of processes and their burstTime time
-    void wait();   // Calculates waitingTime time of the processes
-    void avgWait(); // Calculate average waitingTime for the process
-    void turnAround();
-    void avgTurnAround();
+    int burstTime;
+    int waitingTime;
+    int turnAroundTime;
+    int remainingBurstTime;
 };
 
-void RoundRobin::input() {
-    cout << "Enter the Number of Processes: " << endl;
+int main() {
+    cout << "It is a program to implement Round Robin scheduling algorithm";
+    float totalWaitingTime = 0.0, totalTurnAroundTime = 0.0;
+    int cpuTime = 0;
+
+    //user input
+    cout << "Enter the Number of Processes: ";
+    int n;
     cin >> n;
-    burstTime[n];
-    waitingTime[n];
-    remBurst[n];
+
+    auto *r = new RoundRobin[n];
+
     for (int i = 0; i < n; i++) {
         cout << "Enter Burst Time for Process [" << i + 1 << "]: ";
-        cin >> burstTime[i];
+        cin >> r[i].burstTime;
     }
-    cout << "\n";
-    cout << "Enter the Quantum for the Process: " << endl;
+    cout << "\nEnter the Quantum for the Process: ";
+    int quantum;
     cin >> quantum;
 
-    // Now keeping a copy of burstTime time
+    //creating remaining burst time for the processes
     for (int i = 0; i < n; i++) {
-        remBurst[i] = burstTime[i];
+        r[i].remainingBurstTime = r[i].burstTime;
     }
 
-}
-
-void RoundRobin::wait() {
-    int ct = 0; // cpu time
-
+    //while loop to run until all processes are completed
+    //for loop to go through all processes
+    //checking whether the process has got remaining burst time or not using the if condition
     while (true) {
-        bool flag = false;
+        bool done = true;
         for (int i = 0; i < n; i++) {
-            if (remBurst[i] > 0) {
-                flag = true;
-                if (remBurst[i] > quantum) {
-                    ct += quantum;
-                    remBurst[i] = remBurst[i] - quantum;
+            if (r[i].remainingBurstTime > 0) {
+                done = false;
+                if (r[i].remainingBurstTime > quantum) {
+                    cpuTime += quantum;
+                    r[i].remainingBurstTime = r[i].remainingBurstTime - quantum;
 
                 } else {
-                    ct += remBurst[i];
-                    remBurst[i] = 0;
-                    waitingTime[i] = ct - burstTime[i];
+                    cpuTime += r[i].remainingBurstTime;
+                    r[i].remainingBurstTime = 0;
+                    r[i].waitingTime = cpuTime - r[i].burstTime;
                 }
             }
+            r[i].turnAroundTime = r[i].waitingTime + r[i].burstTime;
         }
-        if (!flag) {
+        if (done) {
             break;
         }
     }
-    for (int i = 0; i < n; i++) {
-        cout << "Waiting time  of Process [" << i + 1 << "]: " << waitingTime[i] << endl;
-    }
-}
 
-void RoundRobin::avgWait() {
-    float totalWaitingTime = 0.0;
+    //printing waiting time, turnaround time for these processes
+    cout << "---------------------------------------------------";
     for (int i = 0; i < n; i++) {
-        totalWaitingTime += (float)waitingTime[i];
+        totalWaitingTime += (float)r[i].waitingTime;
+        totalTurnAroundTime += (float)r[i].turnAroundTime;
+        cout << "\nThe Waiting time for Process [" << i + 1 << "]: " << r[i].waitingTime;
+        cout << "\nThe TurnAround time of Process [" << i + 1 << "]: " << r[i].turnAroundTime << endl;
     }
-    cout << "Average Waiting Time: " << totalWaitingTime / (float)n << endl;
-}
-
-void RoundRobin::turnAround() {
-    for (int i = 0; i < n; i++) {
-        float turnAroundTime = 0.0;
-        turnAroundTime = (float)waitingTime[i] + (float)burstTime[i];
-        cout << "TurnAround time for Process [" << i + 1 << "]: " << turnAroundTime << endl;
-    }
-}
-
-void RoundRobin::avgTurnAround() {
-    float totalTurnAroundTime = 0.0;
-    for (int i = 0; i < n; i++) {
-        totalTurnAroundTime += (float)waitingTime[i] + (float)burstTime[i];
-    }
-    cout << "Average Turn Around Time: " << totalTurnAroundTime / (float)n << endl;
-}
-
-int main() {
-    RoundRobin r;
-    r.input();
-    r.wait();
-    r.avgWait();
-    r.turnAround();
-    r.avgTurnAround();
+    cout << "---------------------------------------------------\n";
+    cout << "Average Waiting Time: " << totalWaitingTime / (float)n;
+    cout << "\nAverage Turn Around Time: " << totalTurnAroundTime / (float)n << endl;
     return 0;
 }
