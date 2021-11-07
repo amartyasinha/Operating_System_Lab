@@ -32,7 +32,7 @@ int main() {
     Processes tmp;
     Processes *p = new Processes[n];
 
-    for(int i = 0; i<n; i++) {
+    for(int i = 0; i < n; i++) {
         cout<<"Enter the Arrival Time for Process ["<< i+1 <<"]: ";
         cin>>p[i].arrivalTime;
         cout<<"Enter the Burst Time for Process ["<< i+1 <<"]: ";
@@ -40,18 +40,18 @@ int main() {
         cout << endl;
     }
 
-    for(int i=0; i < n; i++) {
-        for(int j=i+1; j < n; j++)
-            if(p[i].arrivalTime <= p[j].arrivalTime) {
-                p[j].waitingTime= p[i].arrivalTime + p[i].waitingTime + p[i].burstTime - p[j].arrivalTime;
-                if(p[j].waitingTime < 0)
-                    p[j].waitingTime=0;
+    for(int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (p[i].arrivalTime <= p[j].arrivalTime) {
+                p[j].waitingTime = p[i].arrivalTime + p[i].waitingTime + p[i].burstTime - p[j].arrivalTime;
+                if (p[j].waitingTime < 0)
+                    p[j].waitingTime = 0;
+            } else {
+                tmp = p[i];
+                p[i] = p[j];
+                p[j] = tmp;
             }
-            else {
-                tmp=p[i];
-                p[i]=p[j];
-                p[j]=tmp;
-            }
+        }
         p[i].turnAroundTime = p[i].burstTime + p[i].waitingTime;
     }
     cout << "---------------------------------------------------\n";
