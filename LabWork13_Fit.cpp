@@ -11,14 +11,14 @@ void input(){
     cout << "Enter Number of Memory Block: ";
     cin >> totalBlock;
     for (int i = 1; i <= totalBlock; i++) {
-    cout << "\nEnter Memory Size for Block [" << i << "]: ";
+    cout << "Enter Memory Size for Block [" << i << "]: ";
     cin >> blockSize[i];
     allocation[i] = i;
     }
     cout << "\nEnter Number of Process: ";
     cin >> totalProcess;
     for (int i = 1; i <= totalProcess; i++) {
-    cout << "\nEnter Memory Size for Process [" << i << "]: ";
+    cout << "Enter Memory Size for Process [" << i << "]: ";
     cin >> processSize[i];
     }
 }
@@ -76,27 +76,23 @@ int main() {
     cout << "It is a program to implement First Fit, Best Fit, Worst Fit\n";
 
     input();
-    while (true) {
-        cout << "\nSelect your Choice from the menu:\n\t1. First Fit\n\t2. Best Fit\n\t3. Worst Fit\n\t4. Exit\nEnter Choice: ";
-        int choice;
-        cin >> choice;
-        switch (choice) {
-            case 1:
-                cout << "Memory Allocation Using First Fit\n";
-                break;
-            case 2:
-                cout << "Memory Allocation Using Best Fit\n";
-                bestFit();
-                break;
-            case 3:
-                cout << "Memory Allocation Using Worst Fit\n";
-                worstFit();
-                break;
-            case 4:
-                exit(0);
-            default:
-                cout << "Wrong Choice!";
-        }
-        output();
+    cout << "\nSelect your Choice from the menu:\n\t1. First Fit\n\t2. Best Fit\n\t3. Worst Fit\n\tEnter Choice: ";
+    int choice;
+    cin >> choice;
+    switch (choice) {
+        case 1:
+            cout << "Memory Allocation Using First Fit\n";
+            break;
+        case 2:
+            cout << "Memory Allocation Using Best Fit\n";
+            bestFit();
+            break;
+        case 3:
+            cout << "Memory Allocation Using Worst Fit\n";
+            worstFit();
+            break;
+        default:
+            cout << "Wrong Choice!";
     }
+    output();
 }
